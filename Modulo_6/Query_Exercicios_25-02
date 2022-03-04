@@ -1,0 +1,79 @@
+--Criando novas tabelas
+CREATE TABLE CLIENTE (
+	cod_cli int not null,
+	nome_cli varchar(40) not null,
+	endereco varchar(255) null,
+	cidade varchar(50) null,
+	cep char (8) null,
+	uf char (2) null
+);
+CREATE TABLE VENDEDOR (
+	cod_vend int not null,
+	nome_vend varchar(50) not null,
+	sal_fixo numeric(9,2) not null,
+	faixa_comiss char (2) not null
+);
+CREATE TABLE PEDIDO (
+	num_ped int not null,
+	prazo_entr time not null,
+	cod_cli int not null,
+	cod_vend int not null
+);
+CREATE TABLE ITEM_PEDIDO (
+	num_ped int not null,
+	cod_prod int not null,
+	qtd_ped int not null
+);
+CREATE TABLE PRODUTO (
+	cod_prod int not null,
+	unid_prod int not null,
+	desc_prod varchar (40) null,
+	val_unit numeric (5,2) not null
+);
+--Adicionando primary keys
+ALTER TABLE cliente ADD PRIMARY KEY (cod_cli);
+ALTER TABLE VENDEDOR ADD PRIMARY KEY (cod_vend);
+ALTER TABLE PEDIDO ADD PRIMARY KEY (num_ped);
+ALTER TABLE PRODUTO ADD PRIMARY KEY (cod_prod);
+--Adicionando foreign keys
+ALTER TABLE PEDIDO ADD CONSTRAINT fk_ped_cli FOREIGN KEY (cod_cli) REFERENCES CLIENTE (cod_cli);
+ALTER TABLE PEDIDO ADD CONSTRAINT fk_ped_vend FOREIGN KEY (cod_vend) REFERENCES VENDEDOR (cod_vend);
+ALTER TABLE ITEM_PEDIDO ADD CONSTRAINT fk_item_ped FOREIGN KEY (num_ped) REFERENCES PEDIDO (num_ped);
+ALTER TABLE ITEM_PEDIDO ADD CONSTRAINT fk_item_prod FOREIGN KEY (cod_prod) REFERENCES PRODUTO (cod_prod);
+--Inserindo dados
+INSERT INTO CLIENTE VALUES 
+	(1,'João','Rua Morta 23','São Paulo','12345-060','SP'),
+	(2,'Lauro','Avenida Rodeio 451','Londrina','47802-121','PR'),
+	(3,'Marcia','Rua Sabiá SN','Dourados','89412-580','MS'),
+	(4,'Carla','Avenida das Torres 2280','Rio de Janeiro','58540-120','RJ'),
+	(5,'Raimundo','Praça São Pedro 500','Laranjal Paulista','18500-000','SP');
+INSERT INTO VENDEDOR VALUES
+	(1,'Vendedor 01',3000.00,'10'),
+	(2,'Vendedor 02',3250.00,'08'),
+	(3,'Vendedor 03',3300.00,'07'),
+	(4,'Vendedor 04',3500.00,'05'),
+	(5,'Vendedor 05',4000.00,'02');
+INSERT INTO PEDIDO VALUES
+	(1,'01:15:00',2,4),
+	(2,'01:00:00',3,4),
+	(3,'01:00:00',3,1),
+	(4,'00:30:00',1,1),
+	(5,'00:45:00',2,3);
+INSERT INTO PRODUTO VALUES
+	(1,1,'0',2.50),
+	(2,1,'10',5.00),
+	(3,1,'5',5.50),
+	(4,2,'7.5',3.75),
+	(5,1,'10',10);
+INSERT INTO ITEM_PEDIDO VALUES
+	(1,2,1),
+	(1,3,1),
+	(2,1,1),
+	(3,2,2),
+	(3,3,2);
+--Queries de pesquisa:
+SELECT * FROM CLIENTE;
+SELECT * FROM VENDEDOR;
+SELECT * FROM PEDIDO;
+SELECT * FROM PRODUTO;
+SELECT * FROM ITEM_PEDIDO;
